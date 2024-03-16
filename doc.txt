@@ -1,0 +1,167 @@
+<?php
+
+//====================
+//Backend Module Structure
+//====================
+
+        Schema::create('users', function (Blueprint $table) {
+                    $table->id();
+                    $table->string('name');
+                    $table->string('role_id')->default(2);
+                    $table->string('branch_id')->nullable();
+                    $table->boolean('is_active')->default(0)->comment("1=Active,0=Inactive");
+                    $table->boolean('is_deleted')->default(0)->comment("1=Active,0=Inactive");
+                    $table->string('email')->unique();
+                    $table->text('address')->nullable();
+                    $table->string('phone')->nullable();
+                    $table->timestamp('email_verified_at')->nullable();
+                    $table->string('password');
+                    $table->rememberToken();
+                    $table->timestamps();
+                });
+
+
+/*
+========================
+   Branch Module Structure
+========================
+ */
+        Schema::create('branches', function (Blueprint $table) {
+                    $table->id();
+                    $table->string('name')->unique();
+                    $table->text('address')->nullable();
+                    $table->string('phone')->nullable();
+                    $table->string('email')->nullable();
+                    $table->boolean('is_active')->default(1)->comment("1=Active,0=Inactive");
+                    $table->boolean('is_deleted')->default(0)->comment("1=Active,0=Inactive");
+                    $table->timestamps();
+                });
+
+
+/*
+========================
+Product Module Structure
+========================
+ */
+
+        Schema::create('categories', function (Blueprint $table) {
+                    $table->id();
+                    $table->string('name')->unique();
+                    $table->string('slug');
+                    $table->boolean('is_active')->default(1)->comment("1=Active,0=Inactive");
+                    $table->boolean('is_deleted')->default(0)->comment("1=Active,0=Inactive");
+                    $table->timestamps();
+                });
+
+        Schema::create('brands', function (Blueprint $table) {
+                    $table->id();
+                    $table->string('name')->unique();
+                    $table->string('slug');
+                    $table->boolean('is_active')->default(1)->comment("1=Active,0=Inactive");
+                    $table->boolean('is_deleted')->default(0)->comment("1=Active,0=Inactive");
+                    $table->timestamps();
+                });
+
+        Schema::create('units', function (Blueprint $table) {
+            $table->id();
+            $table->string('name')->unique();
+            $table->string('slug');
+            $table->boolean('is_active')->default(1)->comment("1=Active,0=Inactive");
+            $table->boolean('is_deleted')->default(0)->comment("1=Active,0=Inactive");
+            $table->timestamps();
+            });
+
+        Schema::create('suppliers', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->text('address')->nullable();
+            $table->string('phone')->nullable();
+            $table->string('email')->nullable();
+            $table->boolean('is_active')->default(1)->comment("1=Active,0=Inactive");
+            $table->boolean('is_deleted')->default(0)->comment("1=Active,0=Inactive");
+            $table->timestamps();
+        });
+
+        Schema::create('products', function (Blueprint $table) {
+                $table->id();
+                $table->boolean('is_active')->default(1)->comment("1=Active,0=Inactive");
+                $table->boolean('is_deleted')->default(0)->comment("1=Active,0=Inactive");
+                $table->string('name');
+                $table->string('slug');
+                $table->string('sku')->unique();
+                $table->integer('category_id');
+                $table->integer('brand_id')->nullable();
+                $table->integer('unit_id')->nullable();
+                $table->text('image')->nullable();
+                $table->text('short_description')->nullable();
+                $table->text('description')->nullable();
+                $table->timestamps();
+            });
+
+
+/*
+========================
+    Module Structure
+========================
+ */
+        Schema::create('purchases', function (Blueprint $table) {
+                $table->id();
+                $table->boolean('is_active')->default(1)->comment("1=Active,0=Inactive");
+                $table->boolean('is_deleted')->default(0)->comment("1=Active,0=Inactive");
+                $table->string('date');
+                $table->string('invoice_id');
+                $table->integer('supplier_id');
+                $table->decimal('transportation_cost', 8, 2);
+                $table->decimal('grand_total', 20, 2);
+                $table->text('note')->nullable();
+                $table->integer("created_by")->nullable();
+                $table->integer("updated_by")->nullable();
+                $table->timestamps();
+            });
+
+
+        Schema::create('stocks', function (Blueprint $table) {
+                $table->id();
+                $table->integer('purchase_id')->nullable();
+                $table->integer('product_id')->nullable();
+                $table->integer('branch_id')->nullable();
+                $table->integer('purchase_qty')->nullable();
+                $table->integer('sell_qty')->default(0);
+                $table->decimal('purchase_price', 20, 2);
+                $table->decimal('sell_price', 20, 2)->nullable();
+                $table->boolean('is_active')->default(1)->comment("1=Active,0=Inactive");
+                $table->boolean('is_deleted')->default(0)->comment("1=Active,0=Inactive");
+                $table->integer("created_by")->nullable();
+                $table->integer("updated_by")->nullable();
+                $table->timestamps();
+            });
+
+/*
+========================
+    Module Structure
+========================
+ */
+        Schema::create('orders', function (Blueprint $table) {
+                $table->id();
+                $table->boolean('is_active')->default(1)->comment("1=Active,0=Inactive");
+                $table->boolean('is_deleted')->default(0)->comment("1=Active,0=Inactive");
+                $table->string('invoice_id');
+                $table->decimal('grand_total', 20, 2);
+                $table->string('date');
+                $table->text('note');
+                $table->bigInteger('customer_id');
+                $table->string('customer_name');
+                $table->string('customer_phone');
+                $table->timestamps();
+            });
+        Schema::create('order_items', function (Blueprint $table) {
+                $table->id();
+                $table->integer('order_id');
+                $table->integer('stock_id');
+                $table->integer('branch_id');
+                $table->integer('product_id');
+                $table->integer('qty');
+                $table->decimal('price', 8, 2);
+                $table->decimal('sub_total', 8, 2);
+                $table->timestamps();
+            });

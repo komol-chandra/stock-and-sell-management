@@ -1,0 +1,45 @@
+This project simulates a distributed inventory management system for a multi-store retail chain using MongoDB sharding.
+Project Goal: Develop a system that tracks product inventory across multiple stores in a geographically distributed manner.
+
+A)Database Design:
+We will use four MongoDB collections: MainDB,Products,Inventory,Sell
+
+1.MainDB
+=======
+Table: User, Branch, Location, Category,
+
+2.Products Fragmention DB
+======================
+descirpiton : the product db will be fragmented base on different Category
+
+Table: Product
+
+3.Inventory Fragmentation DB
+======================
+descirpiton : the Inventory BD tables will be fragmented base on different branch
+
+Table: stock, stock_item
+
+4.Sell Fragmention DB
+======================
+descirpiton : the Sell DB tables will be fragmented base on different branch
+
+Table: order, order_item
+
+B)Procedure :
+
+1.setting up mongo db instance for 4 Database
+2.2.Data Population
+3.Functionality Development:
+4.Testing and Demonstration:
+
+C)Benefits of using Sharding:
+D)Additional Considerations:
+E)Tools and Technologies:
+
+
+
+Task
+======
+
+now i need to make a documention to
